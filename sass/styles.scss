@@ -1,0 +1,140 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  position: relative;
+}
+
+:root {
+  --scroll-length: 2;
+}
+
+body,
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.content-section {
+  width: 100%;
+  height: calc(var(--scroll-length) * 100vh);
+  width: 100%;
+
+  .content .subheading,
+  .content .paragraph {
+    opacity: 1;
+    opacity: calc(1 + var(--viewport-y));
+  }
+}
+
+.figure {
+  background: #000;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  > img {
+    max-width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    opacity: 0.75;
+  }
+}
+
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: 30em;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  color: white;
+  padding: 4rem;
+  font-size: 2.5vmin;
+  z-index: 100;
+
+  * {
+    text-shadow: 0 0 4vmin rgba(#000, 0.25);
+  }
+
+  > .header {
+    grid-row: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  > .paragraph {
+    grid-row: 2 / 3;
+    line-height: 1.5;
+    font-size: 3vh;
+    color: #eee;
+    //     RED GREEN BLUE
+  }
+}
+
+.heading {
+  color: #fff;
+  font-size: 3rem;
+  margin: 0;
+}
+
+.falldown.words {
+  .word {
+    animation: slide-down .5s forwards cubic-bezier(0.6, -0.28, 0.735, 0.045);
+    animation-delay: calc(.2s + (.1s * var(--word-index)));
+    opacity: 0;
+
+    @keyframes slide-down {
+      from {
+        transform: translateY(-125%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.subheading {
+  color: lighten(orange, 20);
+  font-size: 4.5vw;
+  font-weight: 600;
+  margin-bottom: 0.5em;
+}
+/*--------------------------------------------------*/
+.figure {
+  position: sticky;
+  top: 0;
+  left: 0;
+  margin: 0;
+  display: block;
+  overflow: hidden;
+  --scale: calc(0.8 + (0.2 * var(--scroll-length)) * var(--visible-y));
+  transform: scale(var(--scale));
+
+  > img {
+    display: block;
+    will-change: transform;
+    transform: scale(calc(1 / var(--scale)));
+  }
+}
+
+.char {
+  display: inline-block;
+  opacity: calc(
+    1 + (var(--viewport-y) * var(--char-percent))
+  );
+}
